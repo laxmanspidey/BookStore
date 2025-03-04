@@ -1,0 +1,489 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Book List</title>
+</head>
+<body>
+    <h1>Book List</h1>
+
+    <!-- Authentication Links -->
+    <div>
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.username }}!</p>
+            <p>Wallet Balance: ${{ user.profile.wallet_balance }}</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a></p>
+        {% endif %}
+    </div>
+
+    <!-- Book List -->
+    <ul>
+        {% for book in books %}
+            <li>
+                {{ book.title }} by {{ book.author }} - ${{ book.price }} (Stock: {{ book.stock }})
+                {% if user.is_authenticated %}
+                    <a href="{% url 'buy_book' book.id %}">Buy</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No books available.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Admin Links -->
+    {% if user.is_superuser %}
+        <div>
+            <a href="{% url 'add_book' %}">Add Book</a>
+        </div>
+    {% endif %}
+
+    <!-- Cart Link -->
+    <a href="{% url 'view_cart' %}">View Cart ({{ request.user.cart_set.count }})</a>
+    <a href="{% url 'add_money' %}">Add Money</a>
+
+</body>
+</html> {% endcomment %}
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .auth-links {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .auth-links a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-links button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .auth-links button:hover {
+            background-color: #c0392b;
+        }
+
+        .book-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .book-list li {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-list li a {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .book-list li a:hover {
+            background-color: #2980b9;
+        }
+
+        .admin-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .admin-links a {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .admin-links a:hover {
+            background-color: #219653;
+        }
+
+        .cart-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .cart-link a {
+            background-color: #8e44ad;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .cart-link a:hover {
+            background-color: #732d91;
+        }
+
+        .wallet-balance {
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book List</h1>
+
+    <!-- Authentication Links -->
+    <div class="auth-links">
+        {% if user.is_authenticated %}
+            <p>Welcome, <strong>{{ user.username }}</strong>! | Wallet Balance: <span class="wallet-balance">${{ user.profile.wallet_balance }}</span></p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <p>
+                <a href="{% url 'login' %}">Login</a> | 
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Book List -->
+    <ul class="book-list">
+        {% for book in books %}
+            <li>
+                <span>
+                    <strong>{{ book.title }}</strong> by {{ book.author }} - ${{ book.price }} (Stock: {{ book.stock }})
+                </span>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'buy_book' book.id %}">Buy</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No books available.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Admin Links -->
+    {% if user.is_superuser %}
+        <div class="admin-links">
+            <a href="{% url 'add_book' %}">Add Book</a>
+        </div>
+    {% endif %}
+
+    <!-- Cart and Add Money Links -->
+    <div class="cart-link">
+        <a href="{% url 'view_cart' %}">View Cart ({{ request.user.cart_set.count }})</a>
+        <a href="{% url 'add_money' %}">Add Money</a>
+    </div>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book List</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* Style authentication links */
+        .auth-links {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .auth-links a {
+            color: #3498db;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style book list */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        li:hover {
+            transform: translateX(10px);
+        }
+
+        /* Style book details */
+        .book-details {
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+
+        .book-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .book-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        /* Style buy button */
+        .buy-button {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Style admin links */
+        .admin-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .admin-links a {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .admin-links a:hover {
+            background-color: #219653;
+        }
+
+        /* Style cart link */
+        .cart-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .cart-link a {
+            background-color: #8e44ad;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cart-link a:hover {
+            background-color: #732d91;
+        }
+
+        /* Style wallet balance */
+        .wallet-balance {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        /* Style logout button */
+        .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Style form */
+        form {
+            margin-top: 10px;
+        }
+
+        /* Style login/signup links */
+        .login-signup {
+            margin-top: 10px;
+        }
+
+        .login-signup a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .login-signup a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book List</h1>
+
+    <!-- Authentication Links -->
+    <div class="auth-links">
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.username }}!</p>
+            <p class="wallet-balance">Wallet Balance: ${{ user.profile.wallet_balance }}</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        {% else %}
+            <p class="login-signup">
+                <a href="{% url 'login' %}">Login</a> | 
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Book List -->
+    <ul>
+        {% for book in books %}
+            <li>
+                <div class="book-details">
+                    <div class="book-title">{{ book.title }}</div>
+                    <div class="book-author">by {{ book.author }}</div>
+                    <div class="book-price">${{ book.price }}</div>
+                    <div>Stock: {{ book.stock }}</div>
+                </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'buy_book' book.id %}" class="buy-button">Buy</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No books available.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Admin Links -->
+    {% if user.is_superuser %}
+        <div class="admin-links">
+            <a href="{% url 'add_book' %}">Add Book</a>
+        </div>
+    {% endif %}
+
+    <!-- Cart Link -->
+    <div class="cart-link">
+        <a href="{% url 'view_cart' %}">View Cart ({{ request.user.cart_set.count }})</a>
+        <a href="{% url 'add_money' %}">Add Money</a>
+    </div>
+
+    <script>
+        // Add smooth hover effect to book items
+        document.querySelectorAll('li').forEach(item => {
+            item.addEventListener('mouseover', function() {
+                this.style.transform = 'translateX(10px)';
+            });
+            item.addEventListener('mouseout', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Add smooth color transition to buttons
+        document.querySelectorAll('.buy-button, .admin-links a, .cart-link a').forEach(button => {
+            button.addEventListener('mouseover', function() {
+                this.style.transition = 'background-color 0.3s ease';
+            });
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add animation on page load
+        document.body.style.opacity = '0';
+        window.onload = function() {
+            document.body.style.transition = 'opacity 0.5s ease';
+            document.body.style.opacity = '1';
+        };
+    </script>
+</body>
+</html>

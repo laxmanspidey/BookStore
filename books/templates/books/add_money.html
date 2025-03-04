@@ -1,0 +1,196 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Add Money</title>
+</head>
+<body>
+    <h1>Add Money to Your Wallet</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Money</button>
+    </form>
+    <a href="{% url 'book_list' %}">Back to Book List</a>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Money</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        input {
+            padding: 0.8rem;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            padding: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            display: none;
+            background-color: #2ecc71;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 2rem;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #2980b9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Money to Your Wallet</h1>
+        <form method="post" id="addMoneyForm">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Money</button>
+        </form>
+        <div class="success-message" id="successMessage">
+            <svg style="width: 24px; height: 24px; margin-right: 5px;" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            Money added successfully!
+        </div>
+        <a href="{% url 'book_list' %}" class="back-link">Back to Book List</a>
+    </div>
+
+    <script>
+        // Form validation
+        document.getElementById('addMoneyForm').addEventListener('submit', function(e) {
+            const amountInput = document.querySelector('input[name="amount"]');
+            const amount = parseFloat(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid positive amount');
+                e.preventDefault();
+            }
+        });
+
+        // Success message display
+        const successMessage = document.getElementById('successMessage');
+        const form = document.getElementById('addMoneyForm');
+
+        form.addEventListener('submit', function(e) {
+            setTimeout(() => {
+                if (e.submitter.textContent === 'Add Money') {
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = "{% url 'book_list' %}";
+                    }, 2000);
+                }
+            }, 500);
+        });
+
+        // Add focus to input on load
+        document.querySelector('input').focus();
+
+        // Add animation to the container on page load
+        document.querySelector('.container').style.opacity = '0';
+        setTimeout(() => {
+            document.querySelector('.container').style.opacity = '1';
+            document.querySelector('.container').style.transform = 'translateY(0)';
+        }, 100);
+
+        // Add hover effect to the back link
+        document.querySelector('.back-link').addEventListener('mouseover', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+
+        document.querySelector('.back-link').addEventListener('mouseout', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

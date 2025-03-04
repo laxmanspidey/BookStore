@@ -1,0 +1,1211 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .toggle-button:hover {
+            opacity: 0.8;
+        }
+
+        .password-strength {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .weak {
+            color: #ff4444;
+        }
+
+        .strong {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        // Password Strength Check
+        const passwordInput = document.querySelector('input[type="password"]');
+        const strengthMeter = document.createElement('div');
+        strengthMeter.className = 'password-strength';
+        document.querySelector('form').appendChild(strengthMeter);
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^A-Za-z0-9]/)) strength++;
+
+            if (strength <= 2) {
+                strengthMeter.textContent = 'Password strength: Weak';
+                strengthMeter.className = 'password-strength weak';
+            } else {
+                strengthMeter.textContent = 'Password strength: Strong';
+                strengthMeter.className = 'password-strength strong';
+            }
+        }
+
+        passwordInput.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Password Toggle
+        const passwordToggle = document.createElement('button');
+        passwordToggle.className = 'toggle-button';
+        passwordToggle.innerHTML = '👁';
+        document.querySelector('input[type="password"]').parentNode.appendChild(passwordToggle);
+
+        passwordToggle.addEventListener('click', function() {
+            const passwordInput = this.previousElementSibling;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.innerHTML = '👁';
+            } else {
+                passwordInput.type = 'password';
+                this.innerHTML = '👁';
+            }
+        });
+
+        // Form Validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Add your custom validation logic here
+        });
+    </script>
+</body>
+</html> {% endcomment %}
+
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #1a73e8; /* Changed title color to blue */
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus {
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(26, 115, 232, 0.3);
+        }
+
+        input:focus::placeholder {
+            color: #1a73e8;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #1557b0 0%, #0d47a1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #666;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            color: #1a73e8;
+        }
+
+        .password-strength {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+
+        .weak {
+            color: #ff4444;
+        }
+
+        .medium {
+            color: #ff9800;
+        }
+
+        .strong {
+            color: #4CAF50;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .login-link a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .form-group::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #1a73e8;
+            transition: width 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .form-group:hover::after,
+        .form-group:focus::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="login-link">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+        </div>
+        
+
+    <script>
+        // Enhanced Password Strength Check
+        const passwordInput = document.querySelector('input[type="password"]');
+        const strengthMeter = document.createElement('div');
+        strengthMeter.className = 'password-strength';
+        document.querySelector('form').appendChild(strengthMeter);
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^A-Za-z0-9]/)) strength++;
+
+            if (strength <= 2) {
+                strengthMeter.textContent = 'Password strength: Weak';
+                strengthMeter.className = 'password-strength weak';
+            } else if (strength <= 3) {
+                strengthMeter.textContent = 'Password strength: Medium';
+                strengthMeter.className = 'password-strength medium';
+            } else {
+                strengthMeter.textContent = 'Password strength: Strong';
+                strengthMeter.className = 'password-strength strong';
+            }
+        }
+
+        passwordInput.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Enhanced Password Toggle
+        const passwordToggle = document.createElement('button');
+        passwordToggle.className = 'toggle-button';
+        passwordToggle.innerHTML = '👁';
+        document.querySelector('input[type="password"]').parentNode.appendChild(passwordToggle);
+
+        passwordToggle.addEventListener('click', function() {
+            const passwordInput = this.previousElementSibling;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.innerHTML = '👁';
+            } else {
+                passwordInput.type = 'password';
+                this.innerHTML = '👁';
+            }
+        });
+
+        // Form Validation with Animations
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Add your custom validation logic here
+            this.querySelectorAll('input').forEach(input => {
+                if (input.value === '') {
+                    input.style.transform = 'translateY(2px)';
+                    input.style.transition = 'transform 0.3s ease';
+                    setTimeout(() => {
+                        input.style.transform = 'translateY(0)';
+                    }, 300);
+                }
+            });
+        });
+
+        // Input Animation
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Password Toggle Animation
+        passwordToggle.addEventListener('click', function() {
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // Form Submission Animation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!e.isTrusted) return;
+            
+            const button = document.querySelector('button[type="submit"]');
+            button.style.opacity = '0.7';
+            button.innerHTML = 'Signing Up...';
+            
+            setTimeout(() => {
+                button.style.opacity = '1';
+                button.innerHTML = 'Sign Up';
+            }, 1000);
+        });
+    </script>
+</body>
+</body>
+</html> {% endcomment %}
+
+
+
+{% comment %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 16, 0.1);
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #718096;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0;
+            border-bottom: 2px solid #e2e8f0;
+            background: transparent;
+            font-size: 1rem;
+            color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-bottom-color: #3498db;
+        }
+
+        input[type="text"]:focus ~ label,
+        input[type="email"]:focus ~ label,
+        input[type="password"]:focus ~ label {
+            transform: translateY(-1.5rem);
+            font-size: 0.8rem;
+            color: #3498db;
+        }
+
+        .form-group.focused label {
+            transform: translateY(-1.5rem);
+            font-size: 0.8rem;
+            color: #3498db;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #718096;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #2980b9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .remember-me {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .remember-me input {
+            margin-right: 0.5rem;
+            width: 16px;
+            height: 16px;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-login a {
+            color: #718096;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-login a:hover {
+            color: #3498db;
+        }
+
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            margin: 0 auto;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Password Strength Meter */
+        .password-strength {
+            margin-top: 1rem;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .weak {
+            color: #ff4444;
+        }
+
+        .medium {
+            color: #ff9800;
+        }
+
+        .strong {
+            color: #4CAF50;
+        }
+
+        /* Password Toggle */
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #718096;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+            <div class="loader" id="loader"></div>
+        </form>
+        <div class="remember-me">
+            <label>
+                <input type="checkbox" name="remember_me"> Remember me
+            </label>
+        </div>
+        <div class="login-link">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+        <div class="social-login">
+            <a href="#"><i class="fab fa-google"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Password Strength Check
+        const passwordInput = document.querySelector('input[type="password"]');
+        const strengthMeter = document.createElement('div');
+        strengthMeter.className = 'password-strength';
+        document.querySelector('form').appendChild(strengthMeter);
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^A-Za-z0-9]/)) strength++;
+
+            if (strength <= 2) {
+                strengthMeter.textContent = 'Password strength: Weak';
+                strengthMeter.className = 'password-strength weak';
+            } else if (strength <= 3) {
+                strengthMeter.textContent = 'Password strength: Medium';
+                strengthMeter.className = 'password-strength medium';
+            } else {
+                strengthMeter.textContent = 'Password strength: Strong';
+                strengthMeter.className = 'password-strength strong';
+            }
+        }
+
+        passwordInput.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Enhanced Password Toggle
+        const passwordToggle = document.createElement('button');
+        passwordToggle.className = 'toggle-button';
+        passwordToggle.innerHTML = '👁';
+        document.querySelector('input[type="password"]').parentNode.appendChild(passwordToggle);
+
+        passwordToggle.addEventListener('click', function() {
+            const passwordInput = this.previousElementSibling;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.innerHTML = '👁';
+            } else {
+                passwordInput.type = 'password';
+                this.innerHTML = '👁';
+            }
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const inputs = document.querySelectorAll('input:not([type="checkbox"])');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isValid = false;
+                    input.classList.add('invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                document.querySelector('.container').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.container').classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // Add loading state
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const loader = document.getElementById('loader');
+            const button = document.querySelector('button[type="submit"]');
+            
+            if (e.submitter.textContent === 'Sign Up') {
+                loader.style.display = 'block';
+                button.style.opacity = '0.7';
+                button.disabled = true;
+            }
+        });
+
+        // Add animation on invalid login
+        const container = document.querySelector('.container');
+        container.addEventListener('animationend', function() {
+            container.style.transform = 'translateY(0)';
+        });
+
+        // Add focus to first input
+        document.querySelector('input').focus();
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add input floating labels
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+</body>
+</html> {% endcomment %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 16, 0.1);
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #718096;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0;
+            border-bottom: 2px solid #e2e8f0;
+            background: transparent;
+            font-size: 1rem;
+            color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-bottom-color: #3498db;
+        }
+
+        input[type="text"]:focus ~ label,
+        input[type="email"]:focus ~ label,
+        input[type="password"]:focus ~ label {
+            transform: translateY(-1.5rem);
+            font-size: 0.8rem;
+            color: #3498db;
+        }
+
+        .form-group.focused label {
+            transform: translateY(-1.5rem);
+            font-size: 0.8rem;
+            color: #3498db;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #718096;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #2980b9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .remember-me {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .remember-me input {
+            margin-right: 0.5rem;
+            width: 16px;
+            height: 16px;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-login a {
+            color: #718096;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-login a:hover {
+            color: #3498db;
+        }
+
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            margin: 0 auto;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Password Strength Meter */
+        .password-strength {
+            margin-top: 1rem;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .weak {
+            color: #ff4444;
+        }
+
+        .medium {
+            color: #ff9800;
+        }
+
+        .strong {
+            color: #4CAF50;
+        }
+
+        /* Password Toggle */
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #718096;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign up</button>
+            <div class="loader" id="loader"></div>
+        </form>
+        <div class="remember-me">
+            <label>
+                <input type="checkbox" name="remember_me"> Remember me
+            </label>
+        </div>
+        <div class="login-link">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+        <div class="social-login">
+            <a href="#"><i class="fab fa-google"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Password Strength check
+        const password = document.querySelector('input[type="password"]');
+        const strengthMeter = document.createElement('div');
+        strengthMeter.className = 'password-strength';
+        document.querySelector('form').appendChild(strengthMeter);
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^A-Za-z0-9]/)) strength++;
+
+            if (strength <= 2) {
+                strengthMeter.textContent = 'Password strength: Weak';
+                strengthMeter.className = 'password-strength weak';
+            } else if (strength <= 3) {
+                strengthMeter.textContent = 'Password strength: Medium';
+                strengthMeter.className = 'password-strength medium';
+            } else {
+                strengthMeter.textContent = 'Password strength: Strong';
+                strengthMeter.className = 'password-strength strong';
+            }
+        }
+
+        password.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const inputs = document.querySelectorAll('input:not([type="checkbox"])');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isValid = false;
+                    input.classList.add('invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                document.querySelector('.container').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.container').classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // Add loading state
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const loader = document.querySelector('#loader');
+            const button = document.querySelector('button[type="submit"]');
+            
+            if (e.submitter.textContent === 'Sign up') {
+                loader.style.display = 'block';
+                button.style.opacity = '0.7';
+                button.disabled = true;
+            }
+        });
+
+        // Add animation on invalid login
+        const container = document.querySelector('.container');
+        container.addEventListener('animationend', function() {
+            container.style.transform = 'translateY(0)';
+        });
+
+        // Add focus to first input
+        document.querySelector('input').focus();
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add input floating labels
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

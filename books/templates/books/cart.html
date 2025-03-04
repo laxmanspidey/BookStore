@@ -1,0 +1,183 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <p>Wallet Balance: ${{ user.profile.wallet_balance }}</p>
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                {{ item.book.title }} by {{ item.book.author }} - ${{ item.book.price }} x {{ item.quantity }}
+                <a href="{% url 'remove_from_cart' item.id %}">Remove</a>
+            </li>
+        {% empty %}
+            <li>Your cart is empty.</li>
+        {% endfor %}
+    </ul>
+    <p>Total Price: ${{ total_price }}</p>
+    <a href="{% url 'checkout' %}">Proceed to Checkout</a>
+    <a href="{% url 'book_list' %}">Continue Shopping</a>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .remove-link {
+            color: #ff4444;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .remove-link:hover {
+            color: #cc0000;
+        }
+
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .checkout-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .continue-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .continue-btn:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .wallet-balance {
+            color: #16a085;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Cart</h1>
+        <p class="wallet-balance">Wallet Balance: ${{ user.profile.wallet_balance }}</p>
+        <ul>
+            {% for item in cart_items %}
+                <li class="cart-item">
+                    {{ item.book.title }} by {{ item.book.author }} - ${{ item.book.price }} x {{ item.quantity }}
+                    <a href="{% url 'remove_from_cart' item.id %}" class="remove-link">Remove</a>
+                </li>
+            {% empty %}
+                <li class="cart-item" style="text-align: center; color: #95a5a6;">
+                    Your cart is empty.
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="total-price">
+            Total Price: ${{ total_price }}
+        </div>
+        <div class="button-group">
+            <a href="{% url 'checkout' %}" class="btn checkout-btn">Proceed to Checkout</a>
+            <a href="{% url 'book_list' %}" class="btn continue-btn">Continue Shopping</a>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add confirmation before removing item from cart
+        document.querySelectorAll('.remove-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (!confirm('Are you sure you want to remove this item from your cart?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Add hover effect to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+
+            button.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
